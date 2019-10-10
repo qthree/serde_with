@@ -89,10 +89,18 @@ script:
 
 after_success:
   - |
-    if [[ "$TRAVIS_RUST_VERSION" == stable ]] || [[ "$TRAVIS_RUST_VERSION" == nightly ]]
+    if [[ "$TRAVIS_RUST_VERSION" == stable ]]
     then
       export TARPAULIN=1
-      cargo tarpaulin --out Xml --all --all-features
+      cargo tarpaulin --out Xml --all --all-features --run-types Tests
+      bash <(curl -s https://codecov.io/bash)
+      echo "CodeCov Uploading of data was successful!"
+    fi
+  - |
+    if [[ "$TRAVIS_RUST_VERSION" == nightly ]]
+    then
+      export TARPAULIN=1
+      cargo tarpaulin --out Xml --all --all-features --run-types Tests Doctests
       bash <(curl -s https://codecov.io/bash)
       echo "CodeCov Uploading of data was successful!"
     fi
