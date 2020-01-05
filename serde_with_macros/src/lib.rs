@@ -246,7 +246,7 @@ fn skip_serializing_none_add_attr_to_field<'a>(
 
                 // Add the `skip_serializing_if` attribute
                 let attr_tokens = quote!(
-                    #[serde(skip_serializing_if = "Option::is_none")]
+                    #[serde(skip_serializing_if = "Option::is_none", serialize_with = "::serde_with::rust::unwrap_or_skip::serialize")]
                 );
                 let parser = Attribute::parse_outer;
                 let attrs = parser
